@@ -1,0 +1,5 @@
+name: streaming_project
+storage: file:///home/ubuntu/sdp-lab/pipelines/streaming/storage
+libraries:
+  - glob:
+      include: transformations/**

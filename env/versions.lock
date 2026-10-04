@@ -1,0 +1,111 @@
+# Version pin ledger
+#
+# Rule: no entry here comes from training data or memory. Every version is
+# read from the vendor's current download/release page or directly from
+# the live instance at the time it is pinned.
+#
+# NOTE ON ARCHITECTURE PIVOT:
+# The initial plan targeted OCI Always Free VM.Standard.A1.Flex (Ampere Altra ARM64 / aarch64).
+# Terraform apply failed with "500-InternalError: Out of host capacity" across all 3 ADs
+# in us-chicago-1. We pivoted to VM.Standard.E5.Flex (AMD EPYC Genoa x86_64).
+# This invalidated all aarch64 build/compilation hypotheses: all Python binary wheels
+# installed as pre-built manylinux x86_64 wheels rather than requiring ARM-specific compilation.
+
+architecture: x86_64
+cpu_model: AMD EPYC 9J14 96-Core Processor
+kernel: 5.15.0-1070-oracle #76-Ubuntu SMP x86_64
+os_release: Ubuntu 22.04.5 LTS
+
+name: terraform-provider-oci
+version: 9.0.0
+source_url: https://registry.terraform.io/providers/oracle/oci/9.0.0
+date_pinned: 2026-09-07
+
+name: apache-spark
+version: 4.2.0
+dist: spark-4.2.0-bin-hadoop3
+source_url: https://downloads.apache.org/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz
+doc_url: https://spark.apache.org/docs/4.2.0/declarative-pipelines-programming-guide.html
+date_pinned: 2026-09-07
+
+name: openjdk
+version: 17.0.20+8-Ubuntu-1ubuntu222.04
+source_url: https://spark.apache.org/docs/4.2.0/index.html
+date_pinned: 2026-09-07
+
+name: python
+version: 3.10.12
+source_url: https://spark.apache.org/docs/4.2.0/index.html
+date_pinned: 2026-09-07
+
+name: pyspark
+version: 4.2.0
+extras: pipelines
+wheel_tag: py2.py3-none-any
+source_url: https://pypi.org/project/pyspark/4.2.0/
+date_pinned: 2026-09-07
+
+# Python dependency wheels (all pre-built x86_64 from live instance pip metadata)
+python_wheels:
+  grpcio:
+    version: 1.83.1
+    wheel_tags:
+      - cp310-cp310-manylinux_2_17_x86_64
+      - cp310-cp310-manylinux2014_x86_64
+  numpy:
+    version: 2.2.6
+    wheel_tags:
+      - cp310-cp310-manylinux_2_17_x86_64
+      - cp310-cp310-manylinux2014_x86_64
+  pandas:
+    version: 2.3.3
+    wheel_tags:
+      - cp310-cp310-manylinux_2_24_x86_64
+      - cp310-cp310-manylinux_2_28_x86_64
+  protobuf:
+    version: 7.36.1
+    wheel_tags:
+      - cp310-abi3-manylinux2014_x86_64
+  pyarrow:
+    version: 25.0.1
+    wheel_tags:
+      - cp310-cp310-manylinux_2_28_x86_64
+  zstandard:
+    version: 0.25.0
+    wheel_tags:
+      - cp310-cp310-manylinux_2_17_x86_64
+      - cp310-cp310-manylinux2014_x86_64
+  py4j:
+    version: 0.10.9.9
+    wheel_tags:
+      - py2.py3-none-any
+
+# Classpath Jars (from live instance /home/ubuntu/.local/lib/python3.10/site-packages/pyspark/jars/)
+classpath_jars:
+  spark-pipelines:
+    version: 2.13-4.2.0
+    jar: spark-pipelines_2.13-4.2.0.jar
+  spark-connect:
+    version: 2.13-4.2.0
+    jar: spark-connect_2.13-4.2.0.jar
+  hadoop-client-api:
+    version: 3.5.0
+    jar: hadoop-client-api-3.5.0.jar
+  hadoop-client-runtime:
+    version: 3.5.0
+    jar: hadoop-client-runtime-3.5.0.jar
+  hadoop-aws:
+    version: 3.5.0
+    jar: hadoop-aws-3.5.0.jar
+    source_url: https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.5.0/hadoop-aws-3.5.0.jar
+    date_pinned: 2026-09-07
+  bundle (aws-java-sdk-v2):
+    version: 2.35.4
+    jar: bundle-2.35.4.jar
+    source_url: https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.35.4/bundle-2.35.4.jar
+    date_pinned: 2026-09-07
+  analyticsaccelerator-s3:
+    version: 1.3.1
+    jar: analyticsaccelerator-s3-1.3.1.jar
+    source_url: https://repo1.maven.org/maven2/software/amazon/s3/analyticsaccelerator/analyticsaccelerator-s3/1.3.1/analyticsaccelerator-s3-1.3.1.jar
+    date_pinned: 2026-09-07

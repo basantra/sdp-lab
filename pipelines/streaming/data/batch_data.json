@@ -1,0 +1,5 @@
+{"id": 1, "device": "sensor-a", "value": 42}
+{"id": 2, "device": "sensor-b", "value": 88}
+{"id": 3, "device": "sensor-c", "value": 95}
+{"id": 4, "device": "sensor-d", "value": 12}
+{"id": 5, "device": "sensor-e", "value": 73}

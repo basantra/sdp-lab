@@ -1,0 +1,25 @@
+# Secrets
+*.pem
+*.key
+*_rsa
+*_rsa.pub
+.env
+.env.*
+**/secrets/**
+**/*credentials*
+**/*.ocikey
+**/api_key*
+
+# Terraform state (the .terraform.lock.hcl provider lock file IS committed —
+# it's part of the reproducibility contract, see env/versions.lock)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+.terraform/
+crash.log
+crash.*.log
+
+# Raw experiment output (large / non-reproducible artifacts)
+runs/*/raw/

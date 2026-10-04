@@ -1,0 +1,34 @@
+digraph G {
+  rankdir=TB; bgcolor="white"; splines=polyline; nodesep=0.30; ranksep=0.85;
+  node [shape=box style="filled,rounded" fontname="Helvetica" fontsize=12 margin="0.20,0.13" penwidth=1.6];
+  edge [fontname="Helvetica" fontsize=11 color="#595959" penwidth=1.4];
+
+  sched [label="External scheduler\ncron, Airflow, K8s CronJob\nno daemon mode exists" fillcolor="#c6dcff" color="#305bab"];
+
+  subgraph cluster_in {
+    label="  Inside Apache SDP 4.2.0  "; fontname="Helvetica-Bold"; fontsize=14; fontcolor="#087429";
+    style="rounded"; color="#087429"; penwidth=2; margin=18;
+    node [fillcolor="#adf0c7" color="#087429"];
+    g  [label="Dependency graph resolution"];
+    o  [label="Execution order and parallelism"];
+    st [label="Streaming tables\nincremental ingestion"];
+    mv [label="Materialized views\nFULL recompute every run" color="#bd0909" penwidth=2.4];
+    cp [label="Streaming checkpoints\noffset-accurate recovery"];
+    g -> o; o -> st; o -> mv; st -> cp;
+  }
+
+  subgraph cluster_out {
+    label="  You still own all of this  "; fontname="Helvetica-Bold"; fontsize=14; fontcolor="#bd0909";
+    style="rounded"; color="#bd0909"; penwidth=2; margin=18;
+    node [fillcolor="#ffc6c6" color="#bd0909"];
+    b1 [label="Triggering and scheduling"];
+    b2 [label="CDC and SCD Type 1 / Type 2"];
+    b3 [label="Data quality constraints"];
+    b4 [label="Queryable event log, lineage"];
+    b5 [label="Catalog persistence config"];
+    b6 [label="Update flows, foreachBatch sinks"];
+    b1 -> b2 -> b3 [style=invis]; b4 -> b5 -> b6 [style=invis];
+  }
+
+  sched -> g [label="  spark-pipelines run  " fontcolor="#305bab" color="#305bab" penwidth=2];
+}

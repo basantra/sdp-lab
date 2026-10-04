@@ -1,0 +1,24 @@
+# OCI Tenancy and Compartment OCIDs (do not commit real OCIDs to git)
+tenancy_ocid     = "ocid1.tenancy.oc1..exampletenancyocid"
+compartment_ocid = "ocid1.tenancy.oc1..examplecompartmentocid"
+
+# Authentication
+region              = "us-ashburn-1"
+oci_profile         = "JDETRIAL"
+user_ocid           = "ocid1.user.oc1..exampleuserocid"
+fingerprint         = "00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd:ee:ff"
+private_key_path    = "~/.oci/sessions/JDETRIAL/oci_api_key.pem"
+ssh_public_key_path = "~/.ssh/id_ed25519.pub"
+
+# Networking & Ingress (Spark UI port 4040 and SSH port 22)
+my_ip = "1.2.3.4/32"
+
+# Compute Shape (Always Free: up to 4 OCPUs, 24 GB RAM, 200 GB block storage across tenancy)
+instance_name           = "sdp-spark-lab"
+instance_shape          = "VM.Standard.A1.Flex"
+instance_ocpus          = 4
+instance_memory_in_gbs  = 24
+boot_volume_size_in_gbs = 100
+
+# Object Storage
+bucket_name = "sdp-lab-data"

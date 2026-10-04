@@ -1,0 +1,32 @@
+digraph G {
+  rankdir=TB; bgcolor="white"; splines=polyline; nodesep=0.30; ranksep=0.55; newrank=true;
+  node [shape=box style="filled,rounded" fontname="Helvetica" fontsize=12 margin="0.20,0.13" penwidth=1.6];
+  edge [fontname="Helvetica" fontsize=11 color="#595959" penwidth=1.4];
+
+  subgraph cluster_r1 {
+    label="  Run 1  "; fontname="Helvetica-Bold"; fontsize=14; fontcolor="#595959";
+    style="rounded"; color="#8a8a8a"; penwidth=2; margin=16;
+    s1  [label="file1.json, file2.json land in bucket" fillcolor="#e7e7e7" color="#595959"];
+    st1 [label="Streaming table\nbatch 0 commits file1, file2" fillcolor="#adf0c7" color="#087429"];
+    mv1 [label="Materialized view writes\npart-00000-1316...  mtime 20:51:42\nrun time 19.728s" fillcolor="#ffc6c6" color="#bd0909"];
+    s1 -> st1; s1 -> mv1;
+  }
+
+  subgraph cluster_r2 {
+    label="  Run 2: unchanged code, unchanged MV source data  "; fontname="Helvetica-Bold"; fontsize=14; fontcolor="#595959";
+    style="rounded"; color="#8a8a8a"; penwidth=2; margin=16;
+    s2  [label="file3.json, file4.json land in bucket" fillcolor="#e7e7e7" color="#595959"];
+    st2 [label="Streaming table\nbatch 1 commits file3, file4 ONLY\nfile1 and file2 absent from sources/0/1" fillcolor="#adf0c7" color="#087429"];
+    mv2 [label="Materialized view DELETES the run 1 part file\nwrites part-00000-ce36...  mtime 20:52:08\nrun time 19.026s" fillcolor="#ffc6c6" color="#bd0909"];
+    s2 -> st2; s2 -> mv2;
+  }
+
+  v1 [label="Streaming tables: INCREMENTAL\n8 rows across 2 part files, zero duplication" fillcolor="#adf0c7" color="#087429" penwidth=2.4];
+  v2 [label="Materialized views: FULL RECOMPUTE\nTriggeredGraphExecution issues a full refresh, unconditional" fillcolor="#ffc6c6" color="#bd0909" penwidth=2.4];
+
+  st1 -> s2 [style=invis];
+  mv1 -> s2 [style=invis];
+  st1 -> st2 [style=dashed color="#8a8a8a"];
+  mv1 -> mv2 [style=dashed color="#8a8a8a"];
+  st2 -> v1; mv2 -> v2;
+}

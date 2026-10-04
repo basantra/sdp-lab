@@ -1,0 +1,20 @@
+digraph G {
+  rankdir=TB; bgcolor="white"; splines=polyline; nodesep=0.40; ranksep=0.95;
+  node [shape=box style="filled,rounded" fontname="Helvetica" fontsize=12 margin="0.20,0.13" penwidth=1.6];
+  edge [fontname="Helvetica" fontsize=11 color="#595959" penwidth=1.4];
+
+  src [label="Kafka, cloud storage,\nrate source" shape=cylinder style=filled fillcolor="#e7e7e7" color="#595959"];
+  st  [label="Streaming table\n@dp.table" fillcolor="#adf0c7" color="#087429"];
+  tbl [label="Physical table\nthe ONLY supported crossing" shape=cylinder style=filled fillcolor="#c6dcff" color="#305bab" penwidth=2.4];
+  mv  [label="Materialized view\n@dp.materialized_view" fillcolor="#adf0c7" color="#087429"];
+  tv  [label="Temporary view\n@dp.temporary_view" fillcolor="#ffc6c6" color="#bd0909"];
+  err [label="INVALID_FLOW_QUERY_TYPE.\nSTREAMING_RELATION_FOR_MATERIALIZED_VIEW\nSQLSTATE 42000" shape=note style=filled fillcolor="#ffc6c6" color="#bd0909" fontsize=11];
+
+  src -> st;
+  st  -> tbl;
+  tbl -> mv [label="  spark.table()  " fontcolor="#305bab" color="#305bab" penwidth=2.2];
+  src -> mv [label="  direct stream read: rejected  " style=dashed color="#bd0909" fontcolor="#bd0909"];
+  st  -> tv [label="  does not bridge  " style=dashed color="#bd0909" fontcolor="#bd0909"];
+  tv  -> mv [label="  still rejected  " style=dashed color="#bd0909" fontcolor="#bd0909"];
+  mv  -> err [style=dotted color="#bd0909" arrowhead=none];
+}

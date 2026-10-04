@@ -1,0 +1,5 @@
+name: object_storage_project
+storage: file:///home/ubuntu/sdp-lab/pipelines/object_storage/storage
+libraries:
+  - glob:
+      include: transformations/**
